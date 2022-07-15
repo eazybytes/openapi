@@ -1,0 +1,281 @@
+openapi: 3.0.3
+info:
+  title: EazyShop Products APIs Definition
+  description: |
+     Using this OpenAPI specification, any consumer can understand the APIs that are exposed by EazyShop
+  termsOfService: https://eazyshop.com/terms/
+  contact:
+    name: API Support
+    url: https://www.eazyshop.com/support
+    email: support@eazyshop.com
+  license:
+    name: EazyShop License
+    url: https://www.eazyshop.com/licenses/LICENSE-2.0.html
+  version: 0.0.1
+servers:
+  - url: https://development.eazyshop-server.com/v1
+    description: Development server
+paths:
+  /categories:
+    get:
+      summary: List all catgories
+      description: Returns the list of categories supported by EazyShop
+      parameters:
+        - name: categoryId
+          in: query
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          example: 101
+      responses:
+        '200':
+          description: A list of catgories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    categoryId:
+                      type: integer
+                    name:
+                      type: string
+  /categories/{categoryId}:
+    get:
+      summary: Return category details
+      description: Returns the category details from EazyShop
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          example: 102
+      responses:
+        '200':
+          description: Return category details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categoryId:
+                    type: integer
+                  name:
+                    type: string
+  /products:
+    get:
+      summary: List all products
+      description: |
+        Returns the list of products supported by EazyShop
+      parameters:
+        - name: categoryId
+          in: query
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          example: 101
+      responses:
+        '200':
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    productId:
+                      type: integer
+                    name:
+                      type: string
+                    price:
+                      type: number
+                    categoryName:
+                      type: string
+                    quantity:
+                      type: integer
+  /products/{productId}:
+    get:
+      summary: Return product details
+      description: |
+        Returns the product details from  EazyShop
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          example: 101
+      responses:
+        '200':
+          description: Return product details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productId:
+                    type: integer
+                  name:
+                    type: string
+                  price:
+                    type: number
+                  categoryName:
+                    type: string
+                  quantity:
+                    type: integer
+  /orders:
+    post:
+      summary: Create Order
+      description: |
+        Post order details to EazyShop for processing
+        and shipping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId:
+                        type: integer
+                      name:
+                       type: string
+                      price:
+                        type: number
+                      categoryName:
+                        type: string
+                      quantity:
+                        type: integer
+                address:
+                  type: object
+                  properties:
+                    addressLine:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    zipcode:
+                      type: string
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+    put:
+      summary: Update Order
+      description: |
+        Update order details to EazyShop for processing
+        and shipping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: integer
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId:
+                        type: integer
+                      name:
+                       type: string
+                      price:
+                        type: number
+                      categoryName:
+                        type: string
+                      quantity:
+                        type: integer
+                address:
+                  type: object
+                  properties:
+                    addressLine:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    zipcode:
+                      type: string
+      responses:
+        '200':
+          description: Order details updated successfully
+    delete:
+      summary: Delete Order
+      description: Delete order details from EazyShop
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Order details cancelled successfully
+    get:
+      summary: Get Order Details
+      description: Get order details from EazyShop
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Fetch Order details successfully
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        productId:
+                          type: integer
+                        name:
+                         type: string
+                        price:
+                          type: number
+                        categoryName:
+                          type: string
+                        quantity:
+                          type: integer
+                  address:
+                    type: object
+                    properties:
+                      addressLine:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zipcode:
+                        type: string
