@@ -1,0 +1,323 @@
+openapi: 3.0.3
+info:
+  title: EazyShop Products APIs Definition
+  description: |
+      # About Us
+      **EazyShop** is a open market product selling company. Any website can list our products by  using our _APIs_. Shipping & other logistics will be taken care by us. You will get an `Affiliate commision` for selling our products.
+      # Categories suported
+        - Mobiles
+          - Apple
+          - Samsung
+          - OnePlus
+        - Laptops
+        - Televisions
+        - Headphones
+  termsOfService: https://eazyshop.com/terms/
+  contact:
+    name: API Support
+    url: https://www.eazyshop.com/support
+    email: support@eazyshop.com
+  license:
+    name: EazyShop License
+    url: https://www.eazyshop.com/licenses/LICENSE-2.0.html
+  version: 0.0.1
+servers:
+  - url: https://development.eazyshop-server.com/v1
+    description: Development server
+tags:
+  - name: Categories
+    description: Categories-related operations
+  - name: Products
+    description: Products-related operations
+  - name: Orders
+    description: Orders-related operations
+paths:
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: List all catgories
+      description: Returns the list of categories supported by EazyShop
+      parameters:
+        - name: categoryId
+          in: query
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          examples:
+            mobiles:
+              summary: Use this example for mobiles
+              value: 101
+            laptops:
+              value: 102
+            headphones:
+              value: 103
+            televisions:
+              value: 104
+      responses:
+        '200':
+          description: A list of catgories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+              examples:
+                all-categories-data:
+                  summary: Categories example data
+                  value:
+                    - categoryId: 101
+                      name: Mobiles
+                    - categoryId: 102
+                      name: Laptops
+                    - categoryId: 103
+                      name: Headphones
+                    - categoryId: 104
+                      name: Televisions
+                single-category-data:
+                  summary: Single category example data
+                  value:
+                    - categoryId: 101
+                      name: Mobiles
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+  /categories/{categoryId}:
+    get:
+      tags:
+        - Categories
+      summary: Return category details
+      description: Returns the category details from EazyShop
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          example: 102
+      responses:
+        '200':
+          description: Return category details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+  /products:
+    get:
+      tags:
+        - Products
+      summary: List all products
+      description: |
+        Returns the list of products supported by EazyShop
+      parameters:
+        - name: categoryId
+          in: query
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          example: 101
+      responses:
+        '200':
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+              examples:
+                products-data:
+                  summary: Products example data
+                  value:
+                    - productId: 101
+                      name: Apple IPhone 13 Pro
+                      price: 999.00
+                      categoryName: Mobiles
+                      quantity: 96
+                    - productId: 102
+                      name: Samsung S22 Ultra
+                      price: 899.00
+                      categoryName: Mobiles
+                      quantity: 121
+                    - productId: 103
+                      name: OnePlus 10 Pro 5G
+                      price: 750.00
+                      categoryName: Mobiles
+                      quantity: 67
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Return product details
+      description: |
+        Returns the product details from  EazyShop
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 100
+            maximum: 1000
+          example: 101
+      responses:
+        '200':
+          description: Return product details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: Create Order
+      description: |
+        Post order details to EazyShop for processing
+        and shipping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Product"
+                address:
+                  $ref: "#/components/schemas/Address"
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+    put:
+      tags:
+        - Orders
+      summary: Update Order
+      description: |
+        Update order details to EazyShop for processing
+        and shipping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: integer
+                products:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Product"
+                address:
+                  $ref: "#/components/schemas/Address"
+      responses:
+        '200':
+          description: Order details updated successfully
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      tags:
+        - Orders
+      summary: Delete Order
+      description: Delete order details from EazyShop
+      parameters:
+        - $ref: "#/components/parameters/orderIdQueryParam"
+      responses:
+        '204':
+          description: Order details cancelled successfully
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+    get:
+      tags:
+        - Orders
+      summary: Get Order Details
+      description: Get order details from EazyShop
+      parameters:
+        - $ref: "#/components/parameters/orderIdQueryParam"
+      responses:
+        '200':
+          description: Fetch Order details successfully
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+                  address:
+                    $ref: "#/components/schemas/Address"
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+        
+components:
+  parameters:
+    orderIdQueryParam:
+      name: orderId
+      in: query
+      required: true
+      schema:
+        type: integer
+  schemas:
+    Address:
+      type: object
+      properties:
+        addressLine:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: string
+      required: [addressLine, city, state, zipcode]
+    Product:
+      type: object
+      properties:
+        productId:
+          type: integer
+        name:
+         type: string
+        price:
+          type: number
+        categoryName:
+          type: string
+        quantity:
+          type: integer
+          description: |
+            ***Quantity*** represents `stock` value when this field is being sent by EazyShop.Where as in the scenarios of consumer sending this feild, it represents `number of product items` inside the order. Consumers are expected to handle the scenario of stopping the end user <u>*when the stock value is 0*</u>
+    Category:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+        name:
+          type: string
+  responses:
+    InternalServerError:
+      description: |
+        An error occured while processing the request.
+        Please contact support@eazyshop.com
