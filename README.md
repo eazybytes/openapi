@@ -9,7 +9,7 @@
 1) Designing APIs with OpenAPI Specifications and Swagger Tools
 2) Describing, Documenting APIs details using OpenAPI Specifications
 3) History of OpenAPI & Swagger and relation between them
-4) Details about Swagger tools like Swagger Editor, Swagger UI, Swagger Inspector, Swagger Hub, Swagger Codegen etc.
+4) Details about Swagger tools like Swagger Editor, Swagger UI,SwaggerHub,SwaggerHub Explore,Swagger Codegen etc.
 5) How to get started with OpenAPI in code first & Design first scenarios
 6) How to write a valid OpenAPI document using YAML syntax
 7) Writing re-usable content inside Open API specification with components
@@ -33,7 +33,7 @@
 - Open API Website - https://www.openapis.org
 - Swagger Website - https://swagger.io
 - Swagger Editor - https://editor.swagger.io
-- Swagger Inspector - https://inspector.swagger.io
+- SwaggerHub Explore - https://explore.swaggerhub.com/
 - OpenAPI Map - https://openapi-map.apihandyman.io/
 - OpenAPI & SpringBoot library - https://springdoc.org
 - List of OpenAPI tools - https://openapi.tools/
