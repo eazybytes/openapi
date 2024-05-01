@@ -1,0 +1,15 @@
+# Sample YAML file
+name: JimInc
+person:
+  name: Jim Banks
+  age: 53
+  address:
+    addressLine1: 1122 Javelina St
+    city: Severance
+    state: CO
+    zipCode: 80550
+courses:
+  - YAML
+  - OpenAPI
+  - C#
+  - Microservices
